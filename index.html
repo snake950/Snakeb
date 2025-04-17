@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake Boy Internet</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            background: #1a1a1a;
+            color: #fff;
+        }
+
+        .splash {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+            animation: fadeOut 2s ease-in-out forwards;
+            animation-delay: 3s;
+        }
+
+        .splash i {
+            font-size: 80px;
+            color: #4CAF50;
+            margin-bottom: 20px;
+            animation: pulse 1s infinite;
+        }
+
+        .splash h1 {
+            color: #4CAF50;
+            font-size: 24px;
+            text-align: center;
+        }
+
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                visibility: hidden;
+            }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .menu-btn {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 25px;
+            margin: 10px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: transform 0.3s;
+            width: 80%;
+            max-width: 300px;
+        }
+
+        .menu-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .package-item {
+            background: rgba(76, 175, 80, 0.1);
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .package-item:hover {
+            background: rgba(76, 175, 80, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .payment-methods {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .form-group {
+            margin: 15px 0;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            border-radius: 5px;
+            border: 1px solid #4CAF50;
+            background: #333;
+            color: white;
+            margin-top: 5px;
+        }
+
+        .submit-btn {
+            background: #4CAF50;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .whatsapp-btn {
+            background: #25D366;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 25px;
+            text-decoration: none;
+            display: inline-block;
+            margin: 10px;
+        }
+
+        .section {
+            display: none;
+            text-align: center;
+        }
+
+        .loader {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #4CAF50;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+            display: none;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .back-btn {
+            background: #666;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .success-message {
+            background: #4CAF50;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="splash">
+        <i class="fas fa-wifi"></i>
+        <h1>Snake Boy Internet</h1>
+        <p>📶🇲🇿🌐</p>
+    </div>
+
+    <div class="container">
+        <!-- Menu Principal -->
+        <div id="main-menu" class="section" style="display:block;">
+            <button class="menu-btn" onclick="showSection('offers')">Ofertas</button>
+            <button class="menu-btn" onclick="showSection('info')">Informações</button>
+            <button class="menu-btn" onclick="showSection('support')">Suporte</button>
+        </div>
+
+        <!-- Ofertas -->
+        <div id="offers" class="section">
+            <h2>Escolha sua opção</h2>
+            <button class="menu-btn" onclick="showSection('buy-megas')">Comprar Megas</button>
+            <button class="menu-btn" onclick="showSection('unlimited')">Ativar Ilimitado</button>
+            <button class="back-btn" onclick="showSection('main-menu')">Voltar</button>
+        </div>
+
+        <!-- Pacotes de Megas -->
+        <div id="buy-megas" class="section">
+            <h2>Pacotes Disponíveis</h2>
+            
+            <h3>1 dia (24H)</h3>
+            <div class="package-item" onclick="selectPackage('550MB - 10MT')">550MB - 10MT</div>
+            <div class="package-item" onclick="selectPackage('1.1GB - 20MT')">1.1GB - 20MT</div>
+            <div class="package-item" onclick="selectPackage('2.2GB - 40MT')">2.2GB - 40MT</div>
+            <div class="package-item" onclick="selectPackage('3.3GB - 60MT')">3.3GB - 60MT</div>
+            <div class="package-item" onclick="selectPackage('5.5GB - 100MT')">5.5GB - 100MT</div>
+            <div class="package-item" onclick="selectPackage('11GB - 200MT')">11GB - 200MT</div>
+
+            <h3>7 dias (semanal)</h3>
+            <div class="package-item" onclick="selectPackage('3GB+700MB - 80MT')">3GB+700MB - 80MT</div>
+            <div class="package-item" onclick="selectPackage('5GB+700MB - 120MT')">5GB+700MB - 120MT</div>
+            <div class="package-item" onclick="selectPackage('10GB+700MB - 225MT')">10GB+700MB - 225MT</div>
+            <div class="package-item" onclick="selectPackage('20GB+700MB - 430MT')">20GB+700MB - 430MT</div>
+            <div class="package-item" onclick="selectPackage('30GB+700MB - 650MT')">30GB+700MB - 650MT</div>
+
+            <h3>Mensal (30 dias)</h3>
+            <div class="package-item" onclick="selectPackage('10GB - 250MT')">10GB - 250MT</div>
+            <div class="package-item" onclick="selectPackage('12GB - 300MT')">12GB - 300MT</div>
+            <div class="package-item" onclick="selectPackage('24GB - 550MT')">24GB - 550MT</div>
+            <div class="package-item" onclick="selectPackage('50GB - 1000MT')">50GB - 1000MT</div>
+
+            <button class="back-btn" onclick="showSection('offers')">Voltar</button>
+        </div>
+
+        <!-- Pacotes Ilimitados -->
+        <div id="unlimited" class="section">
+            <h2>Pacotes Ilimitados</h2>
+            <div class="package-item" onclick="selectPackage('450MT - Chamadas+SMS ilimitados + 11GB')">
+                450MT - Chamadas+SMS ilimitados + 11GB
+            </div>
+            <div class="package-item" onclick="selectPackage('595MT - Chamadas+SMS ilimitados + 15GB')">
+                595MT - Chamadas+SMS ilimitados + 15GB
+            </div>
+            <div class="package-item" onclick="selectPackage('780MT - Chamadas+SMS ilimitados + 20GB')">
+                780MT - Chamadas+SMS ilimitados + 20GB
+            </div>
+            <div class="package-item" onclick="selectPackage('1250MT - Chamadas+SMS ilimitados + 50GB')">
+                1250MT - Chamadas+SMS ilimitados + 50GB
+            </div>
+            <button class="back-btn" onclick="showSection('offers')">Voltar</button>
+        </div>
+
+        <!-- Pagamento -->
+        <div id="payment" class="section">
+            <h2>Métodos de Pagamento</h2>
+            <div class="payment-methods">
+                <p>M-PESA: 844436146</p>
+                <p>E-MOLA: 875836146</p>
+                <p>VICTOR PAIDA BANDE</p>
+            </div>
+
+            <form id="payment-form" onsubmit="submitPayment(event)">
+                <div class="form-group">
+                    <input type="text" id="phone" placeholder="Seu número para receber megas" required>
+                </div>
+                <div class="form-group">
+                    <textarea id="proof" placeholder="Cole aqui o comprovativo de pagamento" required></textarea>
+                </div>
+                <button type="submit" class="submit-btn">Enviar</button>
+            </form>
+
+            <div class="success-message" id="success-msg">
+                Pagamento recebido! Aguarde um momento...
+            </div>
+
+            <button class="back-btn" onclick="showSection('buy-megas')">Voltar</button>
+        </div>
+
+        <!-- Informações -->
+        <div id="info" class="section">
+            <h2>🌟 Bem-vindo(a)! 🌟</h2>
+            <p>É com grande alegria que recebemos você em nossa comunidade. Aqui, oferecemos as melhores opções em vendas de megas, sempre com qualidade e dedicação para atender você da melhor forma possível. 🚀✨</p>
+            <p>Para novidades e promoções, participe do nosso grupo:</p>
+            <a href="https://chat.whatsapp.com/KzA8vIMWRrNArSCLXJMNBi" class="menu-btn" target="_blank">
+                Entrar no Grupo
+            </a>
+            <p>ADM: SNAKE BOY</p>
+            <button class="back-btn" onclick="showSection('main-menu')">Voltar</button>
+        </div>
+
+        <!-- Suporte -->
+        <div id="support" class="section">
+            <h2>Suporte</h2>
+            <a href="https://wa.me/258844436146" class="whatsapp-btn" target="_blank">
+                <i class="fab fa-whatsapp"></i> Contactar Suporte
+            </a>
+            <button class="back-btn" onclick="showSection('main-menu')">Voltar</button>
+        </div>
+
+        <div class="loader" id="loader"></div>
+    </div>
+
+    <script>
+        // Mostrar menu principal após animação
+        setTimeout(() => {
+            document.querySelector('#main-menu').style.display = 'block';
+        }, 5000);
+
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(section => {
+                section.style.display = 'none';
+            });
+            
+            document.getElementById('loader').style.display = 'block';
+            
+            setTimeout(() => {
+                document.getElementById('loader').style.display = 'none';
+                document.getElementById(sectionId).style.display = 'block';
+            }, 1000);
+        }
+
+        function selectPackage(package) {
+            localStorage.setItem('selectedPackage', package);
+            showSection('payment');
+        }
+
+        function submitPayment(event) {
+            event.preventDefault();
+            
+            const phone = document.getElementById('phone').value;
+            const proof = document.getElementById('proof').value;
+            const package = localStorage.getItem('selectedPackage');
+
+            // Aqui você pode implementar o envio para WhatsApp
+            const whatsappMessage = `Novo pedido:\nPacote: ${package}\nNúmero: ${phone}\nComprovativo: ${proof}`;
+            const whatsappUrl = `https://wa.me/258844436146?text=${encodeURIComponent(whatsappMessage)}`;
+
+            document.getElementById('success-msg').style.display = 'block';
+            
+            setTimeout(() => {
+                window.open(whatsappUrl, '_blank');
+                document.getElementById('payment-form').reset();
+                document.getElementById('success-msg').style.display = 'none';
+                showSection('main-menu');
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
